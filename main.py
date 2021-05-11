@@ -33,7 +33,8 @@ logger = logging.getLogger(__name__)
 
 FROM_NAME, FROM_ADDRESS, TO_NAME, TO_ADDRESS, PRICE, ACCEPT, ERROR = range(7)
 
-mensaje_bienvenida = "Hola! 👋 gracias por comunicarte con MENSAJERIA AA, tu domicilio de confianza 🏍💨. Si deseas un servicio por favor regalanos los siguientes datos: \n🔲📍Dirección de origen(Barrio, casa o edificio/apto)\nDirección de entrega(Barrio, casa o edificio/apto)\n🔲👤Nombre y de las personas que entregan y reciben(Especifica quien paga el servicio)\n🔲📦Tipo de producto que desea transportar\n✔El precio del servicio te lo facilitaremos de inmediato he iniciaremos luego de su confirmación. Si te equivocas en algún momento porfavor escribe /cancel para empezar de nuevo"
+mensaje_bienvenida = "Hola 👋🏼 que tal?\n Bienvenida/o a DOMI REC⏱️RD envianos las  direcciones para cotizarte💰 el servicio de domicilio🏍️💨"
+
 
 def start(update: Update, _: CallbackContext) -> int:
   print(update.effective_chat.id)
