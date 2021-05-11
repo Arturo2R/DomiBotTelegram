@@ -17,7 +17,8 @@ data = {
   'To_Name': '',
   'From_Name': '',
   'Distance': 0,
-  'Total_Price': 0
+  'Total_Price': 0,
+  'Phone_Number': 0
 }
 
 Update = telegram.Update
@@ -30,7 +31,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-FROM_NAME, FROM_ADDRESS, TO_NAME, TO_ADDRESS, PRICE, ACCEPT = range(6)
+FROM_NAME, FROM_ADDRESS, TO_NAME, TO_ADDRESS, PRICE, ACCEPT, ERROR = range(7)
 
 mensaje_bienvenida = "Hola! 👋 gracias por comunicarte con MENSAJERIA AA, tu domicilio de confianza 🏍💨. Si deseas un servicio por favor regalanos los siguientes datos: \n🔲📍Dirección de origen(Barrio, casa o edificio/apto)\nDirección de entrega(Barrio, casa o edificio/apto)\n🔲👤Nombre y de las personas que entregan y reciben(Especifica quien paga el servicio)\n🔲📦Tipo de producto que desea transportar\n✔El precio del servicio te lo facilitaremos de inmediato he iniciaremos luego de su confirmación. Si te equivocas en algún momento porfavor escribe /cancel para empezar de nuevo"
 
@@ -47,14 +48,31 @@ def from_name(update: Update, _: CallbackContext) -> int:
   update.message.reply_text(
     'Ahora Enviame la dirección de salida',
   )
+  
+
   data['From_Name'] = update.message.text
   return FROM_ADDRESS
 
 def from_address(update: Update, _: CallbackContext) -> int:
-  logger.info("Dirección de salida es %s", update.message.text)
-  update.message.reply_text(
-    'Ahora Enviame el nombre de la persona que recibira el paquete')
-  data['From_Address'] = update.message.text
+  
+
+  while True:
+    validation_address = calculos.regeValidation(update.message.text, 'address')
+    if validation_address:
+      data['From_Address'] = update.message.text
+      logger.info("Dirección de salida es %s", update.message.text)
+      update.message.reply_text(
+      'Ahora Enviame el nombre de la persona que recibira el paquete')
+      break  
+    else:
+        update.message.reply_text(
+          'Esta mal escrito por favor intente de nuevo')
+        return FROM_ADDRESS
+
+  
+
+    
+
   return TO_NAME
 
 def to_name(update: Update, _: CallbackContext) -> int:
@@ -71,6 +89,21 @@ def to_address(update: Update, _: CallbackContext) -> int:
   data['To_Address'] = update.message.text
   #Calcular el Precio Y Decirlo
 
+
+
+
+  while True:
+    validation_address = calculos.regeValidation(update.message.text, 'address')
+    if validation_address:
+      data['TO_ADDRESS'] = update.message.text
+      
+      break  
+    else:
+        update.message.reply_text(
+          'Esta mal escrito por favor intente de nuevo')
+        return TO_ADDRESS
+
+
   km = calculos.address_and_distance(data['From_Address'], data['To_Address'])
   data['Distance'] = km
   pesos = calculos.precio_total(km)
@@ -83,12 +116,16 @@ def to_address(update: Update, _: CallbackContext) -> int:
 
 def accept(update: Update, _: CallbackContext) -> int:
   user = update.message.from_user
-  logger.info("User %s canceled the conversation.", user.first_name)
+  respuesta = str.lower(update.message.text)
 
-  if update.message.text == 'Si' or 'si' :
+  logger.info("%s, pidio exitosamente", user.first_name)
+
+  if respuesta == 'si' :
     #Guardar en La Base De Datos
     # Ejecutar el Webhook
     # Escribir en el grupo de telegram
+
+
     update.message.reply_text(
       'Ok Su Pedido Se Ha Procesado y  llegara lo más pronto posible'
     )
