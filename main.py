@@ -22,7 +22,7 @@ data = {
 }
 
 Update = telegram.Update
-TOKEN = os.environ['TELEGRAM_TOKEN']
+TOKEN = "1605844581:AAFHUjp67WLVl53ZcmCk3xOGwJy4rp0JrlE"
 
 # Enable logging
 logging.basicConfig(

@@ -5,7 +5,7 @@ import re
 PRECIO_BASE = 4000
 
 
-BING_KEY = os.environ['BING_MAPS_KEY']
+BING_KEY = "AvtDIsnMQA01APySmjx8T7k8O0JMl84kTaYUvl5Km31HYeDxeERQI5ObBTk6S63n"
 
 ADDRESS_REGEX = '(cra|carrera|calle|cl|via)[.]?[\s]?([\d]{1,3}[\w]?)[\s]?([#]?[\s]?\d{1,3}([-]|\s)\d{1,3})'
 PHONE_REGEX = '^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'
