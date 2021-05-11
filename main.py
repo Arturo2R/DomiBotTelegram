@@ -22,7 +22,7 @@ data = {
 }
 
 Update = telegram.Update
-my_secret = os.environ['TELEGRAM_TOKEN']
+TOKEN = os.environ['TELEGRAM_TOKEN']
 
 # Enable logging
 logging.basicConfig(
@@ -147,7 +147,7 @@ def cancel(update: Update, _: CallbackContext) -> int:
   return ConversationHandler.END
 
 def main() -> None:
-  updater = Updater(my_secret)
+  updater = Updater(TOKEN)
 
   dispatcher = updater.dispatcher
 
@@ -166,11 +166,12 @@ def main() -> None:
 
   dispatcher.add_handler(conv_handler)
 
-  updater.start_polling()
+  PORT = int(os.environ.get('PORT', '8443'))
 
-    # Run the bot until you press Ctrl-C or the process receives SIGINT,
-    # SIGTERM or SIGABRT. This should be used most of the time, since
-    # start_polling() is non-blocking and will stop the bot gracefully.
+  updater.start_webhook(listen="0.0.0.0",
+                      port=PORT,
+                      url_path=TOKEN,
+                      webhook_url="https://domibot-arturo2r.herokuapp.com/" + TOKEN)
   updater.idle()
 
 if __name__ == '__main__':
